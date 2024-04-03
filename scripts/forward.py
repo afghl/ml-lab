@@ -14,10 +14,10 @@ def my_dense(a_in, W, b, g):
     units = W.shape[1]
     a_out = np.zeros(units)
     for j in range(units):
-        w = W[:,j]
+        w = W[:, j]
         z = np.dot(w, a_in) + b[j]
         a_out[j] = g(z)
-    print("after compute, W is ", W, "\na_in is ", a_in,  "\na_out is", a_out)
+    print("after compute, W is ", W, "\na_in is ", a_in, "\na_out is", a_out)
     return a_out
 
 
@@ -36,7 +36,5 @@ def new_my_dense(a_in, W, b, g):
     print("before compute, W is ", W, "\na_in is ", a_in)
     z = a_in @ W
     z = z + b
-    print("after compute, W is ", W, "\na_in is ", a_in,  "\na_out is", z)
+    print("after compute, W is ", W, "\na_in is ", a_in, "\na_out is", z)
     return z
-
-
