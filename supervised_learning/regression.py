@@ -4,7 +4,7 @@ import numpy as np
 
 
 class Regression(object):
-    def __init__(self, n_iterations=20, learning_rate=0.001):
+    def __init__(self, n_iterations=20, learning_rate=0.00001):
         self.n_iterations = n_iterations
         self.learning_rate = learning_rate
         self.training_errors = []
@@ -16,6 +16,7 @@ class Regression(object):
 
     def fit(self, X, y):
         n = len(y)
+        self.initialize_weights_and_bias(X.shape[1])
         for i in range(self.n_iterations):
             y_pred = X.dot(self.w) + self.b
             mse = np.mean(0.5 * (y - y_pred) ** 2)
@@ -27,3 +28,4 @@ class Regression(object):
 
     def predict(self, X):
         return X.dot(self.w) + self.b
+
