@@ -20,11 +20,10 @@ class Regression(object):
         for i in range(self.n_iterations):
             y_pred = X.dot(self.w) + self.b
             mse = np.mean(0.5 * (y - y_pred) ** 2)
-            self.training_errors.append(mse)
-            grad_w = -(y - y_pred).dot(X) / n
-            grad_d = -(y - y_pred).sum() / n
-            self.w -= grad_w * self.learning_rate
-            self.b -= grad_d * self.learning_rate
+            dw = -(y - y_pred).dot(X) / n
+            dd = -(y - y_pred).sum() / n
+            self.w -= dw * self.learning_rate
+            self.b -= dd * self.learning_rate
 
     def predict(self, X):
         return X.dot(self.w) + self.b
