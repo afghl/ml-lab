@@ -2,12 +2,17 @@ import numpy as np
 
 
 class NeuronNetwork(object):
-
     def __init__(self, loss):
         self.layers = []
         self.loss_func = loss
 
     def add(self, layer):
+        # 除了第一层的layer，之后的layer都根据前一层的output来计算input_shape
+        if len(self.layers) > 0:
+            last = self.layers[-1]
+            layer.set_input_shape(last.output_shape())
+        if hasattr(layer, 'initialize'):
+            layer.initialize()
         self.layers.append(layer)
 
     def predict(self, X):
@@ -29,3 +34,9 @@ class NeuronNetwork(object):
     def _backward(self, grad):
         for layer in reversed(self.layers):
             grad = layer.backward_pass(grad)
+
+    def summary(self):
+        # print all layers
+        for i, layer in enumerate(self.layers):
+            print("Layer {}: {}, Input shape: {}, Output shape: {}".format(i, layer.__class__.__name__,
+                                                                            layer.input_shape, layer.output_shape()))
