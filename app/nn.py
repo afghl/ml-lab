@@ -4,7 +4,7 @@ import numpy as np
 
 from deep_learning.neuron_network import NeuronNetwork
 from deep_learning.layer import Dense
-from deep_learning.loss_functions import LossFunction
+from deep_learning.loss_functions import LossFunction, MeanSquaredError
 
 def load_mnist(data_path='../data/mnist.npz'):
     # print pwd
@@ -23,7 +23,7 @@ def main():
     print(f"测试集图像形状：{x_test.shape}")
     print(f"测试集标签形状：{y_test.shape}")
 
-    model = NeuronNetwork(loss=LossFunction)
+    model = NeuronNetwork(loss=MeanSquaredError)
 
     model.add(Dense(512, activation='relu', input_shape=(784,)))
     model.add(Dense(256, activation='relu'))
