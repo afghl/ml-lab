@@ -4,7 +4,8 @@ import numpy as np
 class NeuronNetwork(object):
     def __init__(self, loss):
         self.layers = []
-        self.loss_func = loss
+        self.loss_func = loss()
+        self.errors = []
 
     def add(self, layer):
         # 除了第一层的layer，之后的layer都根据前一层的output来计算input_shape
@@ -18,12 +19,17 @@ class NeuronNetwork(object):
     def predict(self, X):
         return self._forward(X, training=False)
 
-    def fix(self, X, y, n_epochs):
+    def fix(self, X, y, n_epochs, batch_size):
         for i in range(n_epochs):
-            y_pred = self._forward(X, training=True)
-            loss = np.mean(self.loss_func.loss(y, y_pred))
-            grad = self.loss_func.gradient(y, y_pred)
-            self._backward(grad)
+            batch_error = []
+            for X_batch, y_batch in batch_iterator(X, y, batch_size):
+                y_pred = self._forward(X_batch, training=True)
+                loss = np.mean(self.loss_func.loss(y_batch, y_pred))
+                batch_error.append(loss)
+                grad = self.loss_func.gradient(y_batch, y_pred)
+                self._backward(grad)
+            self.errors.append(np.mean(batch_error))
+            print("Epoch: {}, Loss: {:.3f}".format(i, np.mean(batch_error)))
 
     def _forward(self, X, training):
         out = X
@@ -42,3 +48,14 @@ class NeuronNetwork(object):
                   "W.shape: {}, b.shape: {}".format(i, layer.__class__.__name__,
                                                     layer.input_shape, layer.output_shape(), layer.W.shape,
                                                     layer.b.shape))
+
+
+def batch_iterator(X, y=None, batch_size=64):
+    """ Simple batch generator """
+    n_samples = X.shape[0]
+    for i in np.arange(0, n_samples, batch_size):
+        begin, end = i, min(i+batch_size, n_samples)
+        if y is not None:
+            yield X[begin:end], y[begin:end]
+        else:
+            yield X[begin:end]
