@@ -16,7 +16,7 @@ class NeuronNetwork(object):
         self.layers.append(layer)
 
     def predict(self, X):
-        self._forward(X, training=False)
+        return self._forward(X, training=False)
 
     def fix(self, X, y, n_epochs):
         for i in range(n_epochs):
@@ -28,7 +28,7 @@ class NeuronNetwork(object):
     def _forward(self, X, training):
         out = X
         for layer in self.layers:
-            out = layer.forward_pass(out)
+            out = layer.forward_pass(out, training)
         return out
 
     def _backward(self, grad):
@@ -38,5 +38,7 @@ class NeuronNetwork(object):
     def summary(self):
         # print all layers
         for i, layer in enumerate(self.layers):
-            print("Layer {}: {}, Input shape: {}, Output shape: {}".format(i, layer.__class__.__name__,
-                                                                            layer.input_shape, layer.output_shape()))
+            print("Layer {}: {}, Input shape: {}, Output shape: {}, "
+                  "W.shape: {}, b.shape: {}".format(i, layer.__class__.__name__,
+                                                    layer.input_shape, layer.output_shape(), layer.W.shape,
+                                                    layer.b.shape))

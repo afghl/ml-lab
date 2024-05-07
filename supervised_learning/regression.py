@@ -24,6 +24,7 @@ class Regression(object):
             dd = -(y - y_pred).sum() / n
             self.w -= dw * self.learning_rate
             self.b -= dd * self.learning_rate
+            self.training_errors.append(mse)
 
     def predict(self, X):
         return X.dot(self.w) + self.b

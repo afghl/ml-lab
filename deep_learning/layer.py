@@ -27,7 +27,7 @@ class Layer(object):
 
 class Dense(Layer):
     def __init__(self, n_units, activation, input_shape=None, learning_rate=0.01):
-        self.activation_func = activation_functions[activation]
+        self.activation_func = activation_functions[activation]()
         self.n_units = n_units
         self.input_shape = input_shape
         self.learning_rate = learning_rate
@@ -40,11 +40,11 @@ class Dense(Layer):
         limit = 1 / math.sqrt(self.input_shape[0])
         # weights size should be (n^[l], n^[l-1])
         self.W = np.random.uniform(limit, -limit, (self.input_shape[0], self.n_units))
-        self.b = np.zeros((self.n_units, 1))
+        self.b = np.zeros((1, self.n_units ))
 
     def forward_pass(self, X, training):
         self.layer_input = X
-        z = np.dot(X, self.W) + self.b
+        z = X.dot(self.W) + self.b
         return self.activation_func(z)
 
     def backward_pass(self, a_grad):
