@@ -19,12 +19,12 @@ class NeuronNetwork(object):
     def predict(self, X):
         return self._forward(X, training=False)
 
-    def fix(self, X, y, n_epochs, batch_size):
+    def fit(self, X, y, n_epochs, batch_size):
         for i in range(n_epochs):
             batch_error = []
             for X_batch, y_batch in batch_iterator(X, y, batch_size):
                 y_pred = self._forward(X_batch, training=True)
-                loss = np.mean(self.loss_func.loss(y_batch, y_pred))
+                loss = np.sum(self.loss_func.loss(y_batch, y_pred))
                 batch_error.append(loss)
                 grad = self.loss_func.gradient(y_batch, y_pred)
                 self._backward(grad)

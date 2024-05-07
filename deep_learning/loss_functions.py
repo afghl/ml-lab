@@ -11,7 +11,7 @@ class LossFunction:
 
 class MeanSquaredError(LossFunction):
     def loss(self, y, y_pred):
-        return 0.5 * np.mean(np.power(y - y_pred, 2))
+        return 0.5 * np.power((y - y_pred), 2)
 
     def gradient(self, y, y_pred):
         return y_pred - y
@@ -20,7 +20,9 @@ class MeanSquaredError(LossFunction):
 class CrossEntropy(LossFunction):
 
     def loss(self, y, y_pred):
-        return - np.sum(y * np.log(y_pred))
+        p = np.clip(y_pred, 1e-15, 1 - 1e-15)
+        return - y * np.log(p)
 
     def gradient(self, y, y_pred):
+        p = np.clip(y_pred, 1e-15, 1 - 1e-15)
         return y_pred - y
