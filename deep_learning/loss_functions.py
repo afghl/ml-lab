@@ -25,4 +25,4 @@ class CrossEntropy(LossFunction):
 
     def gradient(self, y, y_pred):
         p = np.clip(y_pred, 1e-15, 1 - 1e-15)
-        return y_pred - y
+        return - (y / p) + (1 - y) / (1 - p)

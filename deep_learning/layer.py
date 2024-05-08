@@ -26,7 +26,7 @@ class Layer(object):
 
 
 class Dense(Layer):
-    def __init__(self, n_units, activation, input_shape=None, learning_rate=0.01):
+    def __init__(self, n_units, activation, input_shape=None, learning_rate=0.001):
         self.activation_func = activation_functions[activation]()
         self.n_units = n_units
         self.input_shape = input_shape
